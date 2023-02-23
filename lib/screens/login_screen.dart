@@ -8,8 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
-  final _usernameController = TextEditingController(text: 'poya');
-  final _passwordController = TextEditingController(text: '12345678');
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +100,7 @@ class LoginScreen extends StatelessWidget {
                           if (state is AuthStateInitiate) {
                             return ElevatedButton(
                               style: ElevatedButton.styleFrom(
+                                backgroundColor: CustomColors.blueIndicator,
                                 minimumSize: const Size(200, 50),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),

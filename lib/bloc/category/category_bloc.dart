@@ -6,6 +6,7 @@ import 'package:book_shop/di/di.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final ICategoryRepository _repository = locator.get();
+
   CategoryBloc() : super(CategoryInitiateState()) {
     on<CategoryRequestEvent>((event, emit) async {
       emit(CategoryLoadingState());

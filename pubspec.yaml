@@ -37,6 +37,8 @@ dependencies:
   shared_preferences: ^2.0.15
   cached_network_image: ^3.2.3
   shimmer:
+  loading_animation_widget: ^1.2.0+4
+
 
 
 

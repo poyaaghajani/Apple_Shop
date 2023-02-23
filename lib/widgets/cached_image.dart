@@ -13,7 +13,7 @@ class CachedImage extends StatelessWidget {
       borderRadius: BorderRadius.circular(radius!),
       child: CachedNetworkImage(
         imageUrl: imageUrl ?? '',
-        fit: BoxFit.cover,
+        fit: BoxFit.fill,
         placeholder: (context, url) {
           return Shimmer.fromColors(
             baseColor: Colors.grey.shade500,

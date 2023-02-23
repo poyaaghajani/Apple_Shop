@@ -2,11 +2,11 @@ import 'package:book_shop/bloc/home/home_bloc.dart';
 import 'package:book_shop/bloc/home/home_event.dart';
 import 'package:book_shop/bloc/home/home_state.dart';
 import 'package:book_shop/data/model/banner.dart';
-import 'package:book_shop/data/repository/banner_repository.dart';
-import 'package:book_shop/screens/product_detail_screen.dart';
-import 'package:book_shop/widgets/banner_shimmer.dart';
+import 'package:book_shop/data/model/category.dart';
+import 'package:book_shop/data/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../constants/constants.dart';
 import '../widgets/banner_slider.dart';
@@ -38,26 +38,59 @@ class _HomeScreenState extends State<HomeScreen> {
             return CustomScrollView(
               slivers: [
                 const getSearchBox(),
-                if (state is HomeLoadingState) ...[
-                  const SliverToBoxAdapter(
-                    child: BannerShimmer(),
-                  )
-                ],
-                if (state is HomeRequestSuccessState) ...[
-                  state.bannerList.fold((exceptionMessage) {
-                    return const SliverToBoxAdapter(
-                      child: Text(''),
-                    );
-                  }, (listBanners) {
-                    return getBanners(listBanners);
-                  })
-                ],
-                getCategory(),
-                getCategoryListTitle(),
-                getBestSellers(),
-                getBestSellersList(),
-                getMostView(),
-                getMostViewList(),
+                if (state is HomeLoadingState) ...{
+                  SliverToBoxAdapter(
+                    child: Center(
+                      child: LoadingAnimationWidget.inkDrop(
+                        color: CustomColors.blueIndicator,
+                        size: 35,
+                      ),
+                    ),
+                  ),
+                } else ...{
+                  if (state is HomeRequestSuccessState) ...[
+                    state.bannerList.fold((exceptionMessage) {
+                      return const SliverToBoxAdapter(
+                        child: Text(''),
+                      );
+                    }, (listBanners) {
+                      return getBanners(listBanners);
+                    }),
+                  ],
+                  const getCategory(),
+                  if (state is HomeRequestSuccessState) ...[
+                    state.categoryList.fold((exceptionMessage) {
+                      return SliverToBoxAdapter(
+                        child: Text(exceptionMessage),
+                      );
+                    }, (categoryList) {
+                      return getCategoryList(categoryList);
+                    }),
+                  ],
+                  const getBestSellers(),
+                  if (state is HomeRequestSuccessState) ...[
+                    state.bestSellerProductList.fold((exceptionMessage) {
+                      return SliverToBoxAdapter(
+                        child: Text(exceptionMessage),
+                      );
+                    }, (productList) {
+                      return getBestSellersList(productList);
+                    }),
+                  ],
+                  const getMostView(),
+                  if (state is HomeRequestSuccessState) ...[
+                    state.hotestProductList.fold(
+                      (exceptionMessage) {
+                        return SliverToBoxAdapter(
+                          child: Text(exceptionMessage),
+                        );
+                      },
+                      (productList) {
+                        return getMostViewList(productList);
+                      },
+                    ),
+                  ],
+                },
               ],
             );
           },
@@ -68,7 +101,9 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class getMostViewList extends StatelessWidget {
-  const getMostViewList({
+  List<Product> productList;
+  getMostViewList(
+    this.productList, {
     Key? key,
   }) : super(key: key);
 
@@ -80,12 +115,12 @@ class getMostViewList extends StatelessWidget {
         child: SizedBox(
           height: 200,
           child: ListView.builder(
-            itemCount: 10,
+            itemCount: productList.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              return const Padding(
-                padding: EdgeInsets.only(left: 20),
-                child: ProductItem(),
+              return Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: ProductItem(productList[index]),
               );
             },
           ),
@@ -108,16 +143,6 @@ class getMostView extends StatelessWidget {
             const EdgeInsets.only(left: 40, right: 40, bottom: 20, top: 32),
         child: Row(
           children: [
-            Image.asset('images/icon_left_categroy.png'),
-            const SizedBox(width: 10),
-            const Text(
-              'مشاهده همه',
-              style: TextStyle(
-                color: CustomColors.blueIndicator,
-                fontFamily: 'SB',
-              ),
-            ),
-            const Spacer(),
             const Text(
               ' پربازدید ترین ها',
               style: TextStyle(
@@ -126,6 +151,16 @@ class getMostView extends StatelessWidget {
                 fontFamily: 'SB',
               ),
             ),
+            const Spacer(),
+            const Text(
+              'مشاهده همه',
+              style: TextStyle(
+                color: CustomColors.blueIndicator,
+                fontFamily: 'SB',
+              ),
+            ),
+            const SizedBox(width: 10),
+            Image.asset('images/icon_left_categroy.png'),
           ],
         ),
       ),
@@ -134,7 +169,9 @@ class getMostView extends StatelessWidget {
 }
 
 class getBestSellersList extends StatelessWidget {
-  const getBestSellersList({
+  List<Product> productList;
+  getBestSellersList(
+    this.productList, {
     Key? key,
   }) : super(key: key);
 
@@ -146,23 +183,14 @@ class getBestSellersList extends StatelessWidget {
         child: SizedBox(
           height: 200,
           child: ListView.builder(
-            itemCount: 10,
+            itemCount: productList.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return Padding(
-                padding: EdgeInsets.only(left: 20),
+                padding: const EdgeInsets.only(left: 20),
                 child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return ProductDetailScreen();
-                        },
-                      ),
-                    );
-                  },
-                  child: ProductItem(),
+                  onTap: () {},
+                  child: ProductItem(productList[index]),
                 ),
               );
             },
@@ -182,23 +210,10 @@ class getBestSellers extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.only(
-          left: 40,
-          right: 40,
-          bottom: 20,
-        ),
+        padding:
+            const EdgeInsets.only(left: 40, right: 40, bottom: 20, top: 10),
         child: Row(
           children: [
-            Image.asset('images/icon_left_categroy.png'),
-            const SizedBox(width: 10),
-            const Text(
-              'مشاهده همه',
-              style: TextStyle(
-                color: CustomColors.blueIndicator,
-                fontFamily: 'SB',
-              ),
-            ),
-            const Spacer(),
             const Text(
               ' پرفروش ترین ها',
               style: TextStyle(
@@ -207,6 +222,16 @@ class getBestSellers extends StatelessWidget {
                 fontFamily: 'SB',
               ),
             ),
+            const Spacer(),
+            const Text(
+              'مشاهده همه',
+              style: TextStyle(
+                color: CustomColors.blueIndicator,
+                fontFamily: 'SB',
+              ),
+            ),
+            const SizedBox(width: 10),
+            Image.asset('images/icon_left_categroy.png'),
           ],
         ),
       ),
@@ -214,8 +239,10 @@ class getBestSellers extends StatelessWidget {
   }
 }
 
-class getCategoryListTitle extends StatelessWidget {
-  const getCategoryListTitle({
+class getCategoryList extends StatelessWidget {
+  List<Category> listCategory;
+  getCategoryList(
+    this.listCategory, {
     Key? key,
   }) : super(key: key);
 
@@ -227,12 +254,12 @@ class getCategoryListTitle extends StatelessWidget {
         child: SizedBox(
           height: 100,
           child: ListView.builder(
-            itemCount: 10,
+            itemCount: listCategory.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              return const Padding(
-                padding: EdgeInsets.only(left: 20),
-                child: CategoryIconItemList(),
+              return Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: CategoryIconItemList(listCategory[index]),
               );
             },
           ),
@@ -254,7 +281,7 @@ class getCategory extends StatelessWidget {
         padding:
             const EdgeInsets.only(left: 40, right: 40, bottom: 20, top: 32),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: const [
             SizedBox(width: 10),
             Text(
@@ -307,11 +334,12 @@ class getSearchBox extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Row(
               children: [
-                Image.asset('images/icon_apple_blue.png'),
+                Image.asset('images/icon_search.png'),
+                const SizedBox(width: 10),
                 const Expanded(
                   child: Text(
                     'جست و جوی محصولات',
-                    textAlign: TextAlign.end,
+                    textAlign: TextAlign.start,
                     style: TextStyle(
                       fontFamily: 'SM',
                       color: CustomColors.grey,
@@ -319,8 +347,7 @@ class getSearchBox extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
-                Image.asset('images/icon_search.png'),
+                Image.asset('images/icon_apple_blue.png'),
               ],
             ),
           ),

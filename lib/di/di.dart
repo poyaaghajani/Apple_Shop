@@ -1,9 +1,13 @@
 import 'package:book_shop/data/data_source/authentication_datasource.dart';
 import 'package:book_shop/data/data_source/banner_datasource.dart';
 import 'package:book_shop/data/data_source/category_datasource.dart';
+import 'package:book_shop/data/data_source/product_datasource.dart';
+import 'package:book_shop/data/data_source/product_detail_datasource.dart';
 import 'package:book_shop/data/repository/authentication_repository.dart';
 import 'package:book_shop/data/repository/banner_repository.dart';
 import 'package:book_shop/data/repository/category_repository.dart';
+import 'package:book_shop/data/repository/product_detail_repository.dart';
+import 'package:book_shop/data/repository/product_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +26,6 @@ Future<void> getitInit() async {
       await SharedPreferences.getInstance());
 
   //dataSources
-
   locator
       .registerFactory<IAuthenticationDataSource>(() => AuthenticationRemote());
 
@@ -31,12 +34,21 @@ Future<void> getitInit() async {
 
   locator.registerFactory<IBannerDataSource>(() => BannerRemoteDatasource());
 
-  //repositorys
+  locator.registerFactory<IProductDatasource>(() => ProductRemoteDatasource());
 
+  locator.registerFactory<IProductDetailDatasource>(
+      () => ProductDetailDatasource());
+
+  //repositorys
   locator.registerFactory<IAuthenticationRepository>(
       () => AuthenticationRepository());
 
   locator.registerFactory<ICategoryRepository>(() => CategoryRepository());
 
   locator.registerFactory<IBannerRepository>(() => BannerRepository());
+
+  locator.registerFactory<IProductRepository>(() => ProductRepository());
+
+  locator.registerFactory<IProductDetailRepository>(
+      () => ProductDetailRepository());
 }
