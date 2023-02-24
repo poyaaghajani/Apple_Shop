@@ -30,6 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: CustomColors.backgroundScreenColor,
       body: SafeArea(
@@ -91,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 },
+                SliverPadding(padding: EdgeInsets.only(bottom: 10)),
               ],
             );
           },
@@ -109,11 +113,12 @@ class getMostViewList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.only(right: 40),
+        padding: EdgeInsets.only(right: width / 15),
         child: SizedBox(
-          height: 200,
+          height: 210,
           child: ListView.builder(
             itemCount: productList.length,
             scrollDirection: Axis.horizontal,
@@ -137,10 +142,16 @@ class getMostView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return SliverToBoxAdapter(
       child: Padding(
-        padding:
-            const EdgeInsets.only(left: 40, right: 40, bottom: 20, top: 32),
+        padding: EdgeInsets.only(
+          left: width / 15,
+          right: width / 15,
+          bottom: height / 45,
+          top: height / 25,
+        ),
         child: Row(
           children: [
             const Text(
@@ -177,21 +188,19 @@ class getBestSellersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.only(right: 40),
+        padding: EdgeInsets.only(right: width / 15),
         child: SizedBox(
-          height: 200,
+          height: 210,
           child: ListView.builder(
             itemCount: productList.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(left: 20),
-                child: InkWell(
-                  onTap: () {},
-                  child: ProductItem(productList[index]),
-                ),
+                child: ProductItem(productList[index]),
               );
             },
           ),
@@ -208,10 +217,16 @@ class getBestSellers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return SliverToBoxAdapter(
       child: Padding(
-        padding:
-            const EdgeInsets.only(left: 40, right: 40, bottom: 20, top: 10),
+        padding: EdgeInsets.only(
+          left: width / 15,
+          right: width / 15,
+          bottom: height / 45,
+          top: height / 40,
+        ),
         child: Row(
           children: [
             const Text(
@@ -248,9 +263,11 @@ class getCategoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.only(right: 40),
+        padding: EdgeInsets.only(right: width / 15),
         child: SizedBox(
           height: 100,
           child: ListView.builder(
@@ -276,10 +293,12 @@ class getCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return SliverToBoxAdapter(
       child: Padding(
-        padding:
-            const EdgeInsets.only(left: 40, right: 40, bottom: 20, top: 32),
+        padding: EdgeInsets.only(
+            right: width / 15, bottom: height / 45, top: height / 25),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: const [
@@ -320,10 +339,13 @@ class getSearchBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+
     return SliverToBoxAdapter(
       child: Padding(
-        padding:
-            const EdgeInsets.only(left: 40, right: 40, bottom: 32, top: 10),
+        padding: EdgeInsets.only(
+            left: width / 11, right: width / 11, bottom: 32, top: height / 120),
         child: Container(
           height: 46,
           decoration: BoxDecoration(

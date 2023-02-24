@@ -16,6 +16,9 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -31,7 +34,6 @@ class ProductItem extends StatelessWidget {
         );
       },
       child: Container(
-        height: 216,
         width: 160,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -44,18 +46,19 @@ class ProductItem extends StatelessWidget {
             Stack(
               alignment: Alignment.center,
               children: [
-                Expanded(
-                  child: Container(),
+                Container(
+                  width: width / 2.6,
+                  height: height / 8.5,
                 ),
                 SizedBox(
-                  height: 92,
-                  width: 92,
+                  width: 98,
+                  height: 98,
                   child: CachedImage(
                     imageUrl: product.thumbnail,
                   ),
                 ),
                 Positioned(
-                  right: 10,
+                  right: 6,
                   top: 0,
                   child: SizedBox(
                     width: 23,
@@ -65,7 +68,7 @@ class ProductItem extends StatelessWidget {
                 ),
                 Positioned(
                   bottom: 0,
-                  left: 5,
+                  left: 2,
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.red,

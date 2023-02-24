@@ -9,6 +9,9 @@ class CardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: CustomColors.backgroundScreenColor,
       body: SafeArea(
@@ -18,7 +21,39 @@ class CardScreen extends StatelessWidget {
             CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
-                  child: Header(),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: width / 11,
+                        right: width / 11,
+                        bottom: 32,
+                        top: height / 120),
+                    child: Container(
+                      height: 46,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Row(
+                          children: [
+                            Image.asset('images/icon_apple_blue.png'),
+                            const Expanded(
+                              child: Text(
+                                'سبد خرید',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: 'SM',
+                                  color: CustomColors.blueIndicator,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
@@ -236,38 +271,6 @@ class CardScreen extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Padding Header() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 40, right: 40, bottom: 32, top: 10),
-      child: Container(
-        height: 46,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Row(
-            children: [
-              Image.asset('images/icon_apple_blue.png'),
-              const Expanded(
-                child: Text(
-                  'سبد خرید',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'SM',
-                    color: CustomColors.blueIndicator,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

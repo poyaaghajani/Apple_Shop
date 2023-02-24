@@ -26,6 +26,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: CustomColors.backgroundScreenColor,
       body: SafeArea(
@@ -33,8 +36,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
           slivers: [
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 40, right: 40, bottom: 32, top: 10),
+                padding: EdgeInsets.only(
+                    left: width / 11,
+                    right: width / 11,
+                    bottom: 32,
+                    top: height / 120),
                 child: Container(
                   height: 46,
                   decoration: BoxDecoration(

@@ -35,6 +35,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: CustomColors.backgroundScreenColor,
       body: BlocBuilder<ProductBloc, ProductState>(
@@ -44,8 +46,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               slivers: [
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 40, right: 40, bottom: 32, top: 10),
+                    padding: EdgeInsets.only(
+                        left: width / 11,
+                        right: width / 11,
+                        bottom: 32,
+                        top: height / 120),
                     child: Container(
                       height: 46,
                       decoration: BoxDecoration(
@@ -98,7 +103,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ),
                     ),
                   ),
-                  if (state is ProductDetailResponseState)...[
+                  if (state is ProductDetailResponseState) ...[
                     state.productImages.fold((l) {
                       return SliverToBoxAdapter(
                         child: Text(l),
@@ -193,8 +198,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             ),
           ],
         ),
-        SizedBox(
-          width: 30,
+        const SizedBox(
+          width: 45,
         ),
         Stack(
           alignment: Alignment.bottomCenter,
@@ -296,11 +301,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   Column _getProductDetail() {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Column(
       children: [
         Container(
           height: 46,
-          width: 304,
+          width: width / 1.2,
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(color: CustomColors.grey),
@@ -335,7 +342,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         const SizedBox(height: 20),
         Container(
           height: 46,
-          width: 304,
+          width: width / 1.2,
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(color: CustomColors.grey),
@@ -370,7 +377,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         const SizedBox(height: 20),
         Container(
           height: 46,
-          width: 304,
+          width: width / 1.2,
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(color: CustomColors.grey),
@@ -603,12 +610,13 @@ class GalleryWidget extends StatefulWidget {
 class _GalleryWidgetState extends State<GalleryWidget> {
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 44, vertical: 20),
         child: Container(
-          height: 284,
-          width: 340,
+          height: height / 3,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(15),
